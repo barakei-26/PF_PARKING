@@ -1,0 +1,24 @@
+{
+  "name": "pf_parking",
+  "version": "1.0.0",
+  "description": "Remote sensing and availability query tool for parking spaces for recurring users",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barakei-26/PF_PARKING.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/barakei-26/PF_PARKING/issues"
+  },
+  "homepage": "https://github.com/barakei-26/PF_PARKING#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  }
+}
