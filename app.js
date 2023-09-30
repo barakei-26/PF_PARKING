@@ -28,18 +28,60 @@ app.use(express.json());
 app.post("/actualizar_estado", (req, res) => {
   const { id_controlador, id_sensor, valor } = req.body;
 
-  // Insertar datos en la base de datos (tabla "parking")
-  const sql =
-    "INSERT INTO parking (id_controlador, id_sensor, valor) VALUES (?, ?, ?)";
-  db.query(sql, [id_controlador, id_sensor, valor], (err, result) => {
+  // Comprobar si ya existe una fila para el par id_controlador y id_sensor
+  const sqlSelect =
+    "SELECT valor FROM parking WHERE id_controlador = ? AND id_sensor = ?";
+  db.query(sqlSelect, [id_controlador, id_sensor], (err, results) => {
     if (err) {
-      console.error(
-        "Error al insertar datos en la base de datos: " + err.message
-      );
+      console.error("Error al consultar la base de datos: " + err.message);
       res.status(500).send("Error interno del servidor.");
+      return;
+    }
+
+    if (results.length === 0) {
+      // No existe una fila para este par id_controlador y id_sensor, crear una nueva fila
+      const sqlInsert =
+        "INSERT INTO parking (id_controlador, id_sensor, valor) VALUES (?, ?, ?)";
+      db.query(sqlInsert, [id_controlador, id_sensor, valor], (err, result) => {
+        if (err) {
+          console.error(
+            "Error al insertar datos en la base de datos: " + err.message
+          );
+          res.status(500).send("Error interno del servidor.");
+        } else {
+          console.log("Nueva fila insertada en la base de datos.");
+          res.status(200).send("Nueva fila insertada correctamente.");
+        }
+      });
     } else {
-      console.log("Datos insertados en la base de datos.");
-      res.status(200).send("Datos insertados correctamente.");
+      const existingValue = results[0].valor;
+
+      // Si el valor es diferente, actualizar la fila existente
+      if (valor !== existingValue) {
+        const sqlUpdate =
+          "UPDATE parking SET valor = ? WHERE id_controlador = ? AND id_sensor = ?";
+        db.query(
+          sqlUpdate,
+          [valor, id_controlador, id_sensor],
+          (err, result) => {
+            if (err) {
+              console.error(
+                "Error al actualizar datos en la base de datos: " + err.message
+              );
+              res.status(500).send("Error interno del servidor.");
+            } else {
+              console.log("Fila actualizada en la base de datos.");
+              res.status(200).send("Fila actualizada correctamente.");
+            }
+          }
+        );
+      } else {
+        // El valor es el mismo, no es necesario hacer nada
+        console.log("El valor es el mismo, no se realizó ninguna acción.");
+        res
+          .status(200)
+          .send("El valor es el mismo, no se realizó ninguna acción.");
+      }
     }
   });
 });

@@ -51,6 +51,7 @@ public class ControladorSensores : MonoBehaviour
         else
         {
             Debug.Log("Datos enviados al servidor correctamente.");
+            Debug.Log("id_controlador: " + idControlador + "id_sensor: " + idSensor + "valor: " + valor);
         }
     }
 }

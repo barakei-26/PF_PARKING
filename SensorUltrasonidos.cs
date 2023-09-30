@@ -5,6 +5,7 @@ public class SensorUltrasonidos : MonoBehaviour
     public float distanciaMaxima = 5f;
     public float anguloAperturaVertical = 45f;
     private int valorDeDeteccion; // Valor de detección (1 si detecta, 0 si no)
+    public int sensorID; // Identificación única del sensor
 
     private void Start()
     {
@@ -28,11 +29,8 @@ public class SensorUltrasonidos : MonoBehaviour
             // Si no detectamos un objeto, no se ha detectado nada
             valorDeDeteccion = 0;
         }
-    }
 
-    // Función para obtener el valor de detección en tiempo real
-    public int ObtenerValorDeDeteccion()
-    {
-        return valorDeDeteccion;
+        // Enviar el estado al controlador
+        ControladorSensores.Instance.EnviarLectura(sensorID, valorDeDeteccion);
     }
 }
