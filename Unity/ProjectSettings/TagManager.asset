@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - WayPoint
+  - RotatorCollider
+  - Sotano
+  - Piso1
+  - Piso3
+  - Piso2
+  - Piso4
+  - car
   layers:
   - Default
   - TransparentFX
